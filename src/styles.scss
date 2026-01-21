@@ -1,38 +1,43 @@
+@import "tailwindcss";
 
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
-@use '@angular/material' as mat;
+/* ===============================
+   LIGHT THEME
+   =============================== */
 
-html {
-  height: 100%;
-  @include mat.theme((
-    color: (
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
+:root {
+  --md-sys-color-primary: #ff6f2c;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #ffd8c2;
+  --md-sys-color-on-primary-container: #000000;
+
+  --md-sys-color-background: #f5f5f5;
+  --md-sys-color-surface: #ffffff;
+  --md-sys-color-surface-variant: #eeeeee;
+  --md-sys-color-on-surface: #1a1a1a;
+
+  --md-sys-color-outline: #d4d4d4;
 }
 
-body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: light;
+/* ===============================
+   DARK THEME
+   =============================== */
 
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
+html.dark {
+  --md-sys-color-primary: #ff8a50;
+  --md-sys-color-on-primary: #000000;
+  --md-sys-color-primary-container: #ffb59a;
+  --md-sys-color-on-primary-container: #000000;
 
-  // Reset the user agent margin.
-  margin: 0;
-  height: 100%;
+  --md-sys-color-background: #0f0f0f;
+  --md-sys-color-surface: #161616;
+  --md-sys-color-surface-variant: #1f1f1f;
+  --md-sys-color-on-surface: #e5e5e5;
+
+  --md-sys-color-outline: #2a2a2a;
 }
-/* You can add global styles to this file, and also import other style files */
+
+html, body {
+  background-color: var(--md-sys-color-background);
+  color: var(--md-sys-color-on-surface);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
