@@ -10,6 +10,8 @@ import { catchError, shareReplay } from 'rxjs/operators';
 import { CustomerCell } from './customer-cell/customer-cell';
 import { FormsModule, NgModel } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-customers-table',
@@ -20,13 +22,22 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatPaginatorModule,
     CustomerCell,
     FormsModule,
-    DragDropModule
+    DragDropModule,
+    MatCheckboxModule
   ],
   templateUrl: './customers-table.html',
   styleUrls: ['./customers-table.scss'],
 })
 export class CustomersTable implements OnInit, AfterViewInit {
-  displayedColumns = ['id', 'firstName', 'lastName', 'email', 'isActive'];
+  columns = [
+    { key: 'id', label: 'Id' },
+    { key: 'firstName', label: 'First Name' },
+    { key: 'lastName', label: 'Last Name' },
+    { key: 'email', label: 'Email' },
+    { key: 'isActive', label: 'Active' }
+  ];
+  displayedColumns = ['select', ...this.columns.map(c => c.key)];
+  selection = new SelectionModel<Customer>(true, []);
   dataSource = new MatTableDataSource<Customer>();
   filterValue: string = '';
 
@@ -63,5 +74,18 @@ export class CustomersTable implements OnInit, AfterViewInit {
   applyFilter(value: string) {
     this.filterValue = value.trim().toLowerCase();
     this.dataSource.filter = this.filterValue;
+  }
+
+  
+  isAllSelected() {
+    const numSelected = this.selection.selected.length
+    const numRows = this.dataSource.data.length
+    return numSelected === numRows
+  }
+
+  toggleAllRows() {
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.dataSource.data.forEach(row => this.selection.select(row))
   }
 }
