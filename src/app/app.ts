@@ -1,10 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { CustomersTable } from './components/customers-table/customers-table';
 import { ThemeService } from './services/theme.service';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
-  imports: [CustomersTable],
+  imports: [CustomersTable, MatToolbarModule, MatButtonModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
