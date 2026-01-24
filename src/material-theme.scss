@@ -2,9 +2,60 @@
 
 html {
   color-scheme: light dark;
+}
+
+html {
   @include mat.theme((
-    color: mat.$blue-palette,
+    color: mat.$violet-palette,
     typography: Roboto,
-    density: 0
+    density: 0,
   ));
+}
+
+html.red {
+  @include mat.theme(( color: mat.$red-palette ));
+}
+
+html.green {
+  @include mat.theme(( color: mat.$green-palette ));
+}
+
+html.blue {
+  @include mat.theme(( color: mat.$blue-palette ));
+}
+
+html.yellow {
+  @include mat.theme(( color: mat.$yellow-palette ));
+}
+
+html.cyan {
+  @include mat.theme(( color: mat.$cyan-palette ));
+}
+
+html.magenta {
+  @include mat.theme(( color: mat.$magenta-palette ));
+}
+
+html.orange {
+  @include mat.theme(( color: mat.$orange-palette ));
+}
+
+html.chartreuse {
+  @include mat.theme(( color: mat.$chartreuse-palette ));
+}
+
+html.spring-green {
+  @include mat.theme(( color: mat.$spring-green-palette ));
+}
+
+html.azure {
+  @include mat.theme(( color: mat.$azure-palette ));
+}
+
+html.violet {
+  @include mat.theme(( color: mat.$violet-palette ));
+}
+
+html.rose {
+  @include mat.theme(( color: mat.$rose-palette ));
 }

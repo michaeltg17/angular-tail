@@ -1,5 +1,18 @@
-<mat-toolbar color="primary">
-  My Themed App
+<mat-toolbar>
+  <span>Angular App</span>
+  <span style="flex: 1"></span>
+
+  <mat-form-field appearance="outline" style="width: 200px">
+    <mat-label>Theme color</mat-label>
+    <mat-select
+      [value]="selectedPalette"
+      (selectionChange)="setTheme($event.value)"
+    >
+      <mat-option *ngFor="let p of palettes" [value]="p">
+        {{ p | titlecase }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 </mat-toolbar>
 
 <div style="padding: 20px;">
