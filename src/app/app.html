@@ -1,8 +1,7 @@
 <mat-toolbar>
   <span>Angular App</span>
   <span style="flex: 1"></span>
-
-<button
+  <button
   mat-icon-button
   [matMenuTriggerFor]="paletteMenu"
 >
@@ -10,19 +9,22 @@
 </button>
 
 <mat-menu #paletteMenu="matMenu" class="palette-menu">
-  <mat-radio-group
-    [value]="selectedPalette"
-    (change)="setTheme($event.value)"
-  >
-    <mat-radio-button
-      *ngFor="let p of palettes"
-      [value]="p"
-      class="palette-radio"
+  <div (click)="$event.stopPropagation()">
+    <mat-radio-group
+      [value]="selectedPalette"
+      (change)="setTheme($event.value)"
     >
-      {{ p | titlecase }}
-    </mat-radio-button>
-  </mat-radio-group>
+      <mat-radio-button
+        *ngFor="let p of palettes"
+        [value]="p"
+        class="palette-radio"
+      >
+        {{ p | titlecase }}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
 </mat-menu>
 
 </mat-toolbar>
+
 <app-customers-table></app-customers-table>

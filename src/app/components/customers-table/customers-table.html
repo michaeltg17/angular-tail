@@ -3,16 +3,16 @@
     <mat-form-field>
       <input 
         matInput 
-        placeholder="Filter customers..." 
+        placeholder="Search" 
         [(ngModel)]="filterValue" 
         (input)="applyFilter(filterValue)">
     </mat-form-field>
 
-    <button mat-icon-button color="primary" (click)="editCustomer()">
+    <button mat-icon-button (click)="editCustomer()">
       <mat-icon>edit</mat-icon>
     </button>
 
-    <button mat-icon-button color="warn" (click)="deleteCustomer()">
+    <button mat-icon-button (click)="deleteCustomer()">
       <mat-icon>delete</mat-icon>
     </button>
   </div>

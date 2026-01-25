@@ -7,10 +7,21 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
-  imports: [CustomersTable, MatToolbarModule, MatSelectModule, MatFormFieldModule, CommonModule, MatIconModule, MatRadioModule, MatMenuModule],
+  imports: [
+    CustomersTable, 
+    MatToolbarModule, 
+    MatSelectModule, 
+    MatFormFieldModule, 
+    CommonModule, 
+    MatIconModule, 
+    MatRadioModule, 
+    MatMenuModule,
+    MatButtonModule
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
