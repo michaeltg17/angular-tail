@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { themeColors } from './models/theme';
 
 @Component({
   selector: 'app-root',
@@ -26,21 +27,7 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './app.scss'
 })
 export class App {
-  palettes = [
-    'red',
-    'green',
-    'blue',
-    'yellow',
-    'cyan',
-    'magenta',
-    'orange',
-    'chartreuse',
-    'spring-green',
-    'azure',
-    'violet',
-    'rose',
-  ];
-  selectedPalette = this.palettes[1];
+  selectedPalette = themeColors[1];
 
   ngOnInit() {
     const savedTheme = localStorage.getItem('theme');
@@ -53,4 +40,11 @@ export class App {
     document.documentElement.className = theme;
     localStorage.setItem('theme', theme);
   }
+
+  setMode(mode: 'light' | 'dark') {
+    const html = document.documentElement;
+    html.classList.remove('light', 'dark');
+    html.classList.add(mode);
+  }
+
 }

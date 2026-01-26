@@ -5,58 +5,78 @@ html {
   background: var(--mat-sys-surface);
 }
 
-html {
+html.light {
   @include mat.theme((
-    color: mat.$violet-palette,
+    theme-type: light,
     typography: Roboto,
     density: 0,
   ));
 }
 
-html.red {
+html.dark {
+  @include mat.theme((
+    theme-type: dark,
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+html.light.red,
+html.dark.red {
   @include mat.theme(( color: mat.$red-palette ));
 }
 
-html.green {
+html.light.green,
+html.dark.green {
   @include mat.theme(( color: mat.$green-palette ));
 }
 
-html.blue {
+html.light.blue,
+html.dark.blue {
   @include mat.theme(( color: mat.$blue-palette ));
 }
 
-html.yellow {
+html.light.yellow,
+html.dark.yellow {
   @include mat.theme(( color: mat.$yellow-palette ));
 }
 
-html.cyan {
+html.light.cyan,
+html.dark.cyan {
   @include mat.theme(( color: mat.$cyan-palette ));
 }
 
-html.magenta {
+html.light.magenta,
+html.dark.magenta {
   @include mat.theme(( color: mat.$magenta-palette ));
 }
 
-html.orange {
+html.light.orange,
+html.dark.orange {
   @include mat.theme(( color: mat.$orange-palette ));
 }
 
-html.chartreuse {
+html.light.chartreuse,
+html.dark.chartreuse {
   @include mat.theme(( color: mat.$chartreuse-palette ));
 }
 
-html.spring-green {
+html.light.spring-green,
+html.dark.spring-green {
   @include mat.theme(( color: mat.$spring-green-palette ));
 }
 
-html.azure {
+html.light.azure,
+html.dark.azure {
   @include mat.theme(( color: mat.$azure-palette ));
 }
 
-html.violet {
+html.light.violet,
+html.dark.violet {
   @include mat.theme(( color: mat.$violet-palette ));
 }
 
-html.rose {
+html.light.rose,
+html.dark.rose {
   @include mat.theme(( color: mat.$rose-palette ));
 }
