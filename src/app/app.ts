@@ -9,7 +9,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { ThemeService } from './services/theme.service';
-import { themeColors } from './models/theme';
+import { themeColors, themeModes } from './models/theme';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +29,7 @@ import { themeColors } from './models/theme';
 export class App implements OnInit {
   themeService = inject(ThemeService);
   themeColors = themeColors;
+  themeModes = themeModes;
 
   ngOnInit() {
     this.themeService.loadTheme();

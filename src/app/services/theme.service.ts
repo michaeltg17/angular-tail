@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Theme, ThemeColor, themeColors, ThemeType, themeTypes } from '../models/theme';
+import { Theme, ThemeColor, themeColors, ThemeMode, themeModes } from '../models/theme';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +14,8 @@ export class ThemeService {
     this.persistTheme();
   }
 
-  setThemeType(type: ThemeType) {
-    this.currentTheme = { ...this.currentTheme, type };
+  setThemeMode(mode: ThemeMode) {
+    this.currentTheme = { ...this.currentTheme, mode: mode };
     this.applyTheme();
     this.persistTheme();
   }
@@ -36,8 +36,8 @@ export class ThemeService {
 
   private applyTheme() {
     const html = document.documentElement;
-    html.classList.remove(...themeTypes, ...themeColors);
-    html.classList.add(this.currentTheme.type, this.currentTheme.color);
+    html.classList.remove(...themeModes, ...themeColors);
+    html.classList.add(this.currentTheme.mode, this.currentTheme.color);
   }
 
   private persistTheme() {
