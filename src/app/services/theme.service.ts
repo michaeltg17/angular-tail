@@ -21,11 +21,14 @@ export class ThemeService {
   }
 
   loadTheme() {
-    const raw = localStorage.getItem(this.storageKey);
-    if (!raw) return;
+    const json = localStorage.getItem(this.storageKey);
+    if (!json) {
+      this.applyTheme();
+      return;
+    }
 
     try {
-      this.currentTheme = JSON.parse(raw);
+      this.currentTheme = JSON.parse(json);
       this.applyTheme();
       // eslint-disable-next-line no-empty
     } catch {}

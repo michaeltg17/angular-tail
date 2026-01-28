@@ -20,7 +20,20 @@ import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-customers-table',
-  imports: [MatTableModule, MatSnackBarModule, MatSortModule, MatPaginatorModule, CustomerCell, FormsModule, DragDropModule, MatCheckboxModule, CommonModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatInputModule],
+  imports: [
+    MatTableModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatPaginatorModule,
+    CustomerCell,
+    FormsModule,
+    DragDropModule,
+    MatCheckboxModule,
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule],
   templateUrl: './customers-table.html',
   styleUrls: ['./customers-table.scss']
 })
