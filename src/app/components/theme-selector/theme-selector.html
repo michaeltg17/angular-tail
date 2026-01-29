@@ -1,36 +1,36 @@
 <button mat-icon-button [matMenuTriggerFor]="themeMenu">
   <mat-icon>format_color_fill</mat-icon>
 </button>
-
 <mat-menu
   #themeMenu="matMenu"
   class="theme-selector">
-
-  <div class="menu-container">
-    <!-- Mode -->
-    <div class="menu-column">
-      <h3 class="menu-title">Mode</h3>
+  <div class="container">
+    <div>
+      <h3 class="title">Mode</h3>
       <mat-radio-group
-        class="color-group"
+        class="item-group"
         [value]="themeService.currentTheme.mode"
         (change)="themeService.setThemeMode($event.value)">
-        <mat-radio-button *ngFor="let m of themeModes" [value]="m">
-          {{ m | titlecase }}
-        </mat-radio-button>
+        @for (m of themeModes; track m) {
+          <mat-radio-button [value]="m">
+            {{ m | titlecase }}
+          </mat-radio-button>
+        }
       </mat-radio-group>
     </div>
-
-    <!-- Colors -->
-    <div class="menu-column color-column">
-      <h3 class="menu-title">Color</h3>
+    <div class="color-section">
+      <h3 class="title">Color</h3>
       <mat-radio-group
-        class="color-group"
+        class="item-group"
         [value]="themeService.currentTheme.color"
         (change)="themeService.setThemeColor($event.value)">
-        <mat-radio-button *ngFor="let c of themeColors" [value]="c">
-          {{ c | titlecase }}
-        </mat-radio-button>
+        @for (c of themeColors; track c) {
+          <mat-radio-button [value]="c">
+            {{ c | titlecase }}
+          </mat-radio-button>
+        }
       </mat-radio-group>
     </div>
   </div>
 </mat-menu>
+
