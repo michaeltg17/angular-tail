@@ -1,5 +1,17 @@
-import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
-import { App } from './app/app';
+import { bootstrapApplication } from '@angular/platform-browser'
+import { isDevMode } from '@angular/core'
+import { appConfig } from './app/app.config'
+import { App } from './app/app'
+import { worker } from './testing/msw/browser'
 
-bootstrapApplication(App, appConfig).catch((err) => console.error(err));
+async function bootstrap() {
+  if (isDevMode()) {
+    await worker.start({
+      serviceWorker: { url: 'mockServiceWorker.js' }
+    })
+  }
+
+  await bootstrapApplication(App, appConfig)
+}
+
+bootstrap().catch(err => console.error(err))
