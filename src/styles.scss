@@ -1,20 +1,2 @@
-.theme-selector {
-  .container {
-    padding: 2px 10px;
-  }
-
-  .color-section {
-    margin-top: 16px;
-  }
-
-  .title {
-    margin: 0;
-    font-size: 0.9rem;
-    font-weight: 500;
-  }
-
-  .item-group {
-    display: flex;
-    flex-direction: column;
-  }
-}
+@use 'styles/themes';
+@use 'styles/theme-selector';
