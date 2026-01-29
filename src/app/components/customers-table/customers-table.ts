@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -17,6 +17,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { DeleteDialog, DeleteDialogData } from '../delete-dialog/delete-dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-customers-table',
@@ -33,13 +35,17 @@ import { MatInputModule } from '@angular/material/input';
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
-    MatInputModule],
+    MatInputModule,
+    MatDialogModule],
   templateUrl: './customers-table.html',
-  styleUrls: ['./customers-table.scss']
+  styleUrls: ['./customers-table.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomersTable implements OnInit, AfterViewInit {
   private customerService = inject(CustomerService);
   private snackBar = inject(MatSnackBar);
+  private dialog = inject(MatDialog);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
   columns = [
     { key: 'id', label: 'Id' },
@@ -98,6 +104,29 @@ export class CustomersTable implements OnInit, AfterViewInit {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   editCustomer() {}
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  deleteCustomer() {}
+  deleteCustomers() {
+    const dialogData: DeleteDialogData = {
+      title: 'Delete customers',
+      message: 'Do you really want to delete these customers?',
+      confirmText: 'Delete',
+      cancelText: 'Cancel'
+    };
+
+    const dialogRef = this.dialog.open(DeleteDialog, {
+      data: dialogData,
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.selection.clear();
+        this.changeDetectorRef.markForCheck();
+        this.customerService.deleteCustomers(this.selection.selected.map(row => row.id)).subscribe(() => {
+          this.snackBar.open('Customers deleted successfully', 'Close', {
+            duration: 3000
+          });
+        });
+      }
+    });
+  }
 }

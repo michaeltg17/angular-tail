@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -6,7 +6,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './customer-cell.html',
-  styleUrls: ['./customer-cell.scss']
+  styleUrls: ['./customer-cell.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomerCell {
   @Input() value: string | boolean | number | null = null;

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,7 +18,8 @@ import { themeColors, themeModes } from '../../models/theme';
     MatMenuModule,
     MatButtonModule],
   templateUrl: './theme-selector.html',
-  styleUrl: './theme-selector.scss'
+  styleUrl: './theme-selector.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ThemeSelector implements OnInit {
   themeService = inject(ThemeService);

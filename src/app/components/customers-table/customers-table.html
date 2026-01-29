@@ -8,7 +8,7 @@
       <mat-icon>edit</mat-icon>
     </button>
 
-    <button mat-icon-button (click)="deleteCustomer()">
+    <button mat-icon-button [disabled]="selection.isEmpty()" (click)="deleteCustomers()">
       <mat-icon>delete</mat-icon>
     </button>
   </div>
@@ -17,22 +17,24 @@
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="select">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-checkbox [checked]="isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()" (change)="toggleAllRows()"> </mat-checkbox>
+          <mat-checkbox [checked]="isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()"
+            (change)="toggleAllRows()"> </mat-checkbox>
         </th>
         <td mat-cell *matCellDef="let row">
-          <mat-checkbox (click)="$event.stopPropagation()" (change)="selection.toggle(row)" [checked]="selection.isSelected(row)"> </mat-checkbox>
+          <mat-checkbox (click)="$event.stopPropagation()" (change)="selection.toggle(row)"
+            [checked]="selection.isSelected(row)"> </mat-checkbox>
         </td>
       </ng-container>
 
       @for (col of columns; track col.key) {
-        <ng-container [matColumnDef]="col.key">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>
-            {{ col.label }}
-          </th>
-          <td mat-cell *matCellDef="let customer">
-            <app-customer-cell [value]="customer[col.key]"></app-customer-cell>
-          </td>
-        </ng-container>
+      <ng-container [matColumnDef]="col.key">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ col.label }}
+        </th>
+        <td mat-cell *matCellDef="let customer">
+          <app-customer-cell [value]="customer[col.key]"></app-customer-cell>
+        </td>
+      </ng-container>
       }
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
