@@ -7,8 +7,10 @@ import { MatInputModule } from '@angular/material/input'
 import { MatCheckboxModule } from '@angular/material/checkbox'
 import { Customer } from '../../models/customer'
 
+export type DialogMode = 'add' | 'edit' | 'view';
+
 export interface CustomerDialogData {
-  mode: 'add' | 'edit'
+  mode: DialogMode,
   customer?: Customer
 }
 

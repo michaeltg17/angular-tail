@@ -17,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ConfirmationDialog, ConfirmatonDialogData } from '../confirmation-dialog/confirmation-dialog';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { CustomerDialog } from '../customer-dialog/customer-dialog';
 
 @Component({
   selector: 'app-customers-table',
@@ -102,8 +103,34 @@ export class CustomersTable implements OnInit, AfterViewInit {
     this.isAllSelected() ? this.selection.clear() : this.dataSource.data.forEach((row) => this.selection.select(row));
   }
 
+  addCustomer() {
+    const dialogRef = this.dialog.open(CustomerDialog, {
+      data: { mode: DialogMode.Add }
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return
+      this.customerService.addCustomer(result)
+    })
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  editCustomer() { }
+  editCustomer() {
+    if (this.selection.selected.length !== 1) return
+
+    const dialogRef = this.dialog.open(CustomerDialog, {
+      data: {
+        mode: 'edit',
+        customer: this.selection.selected[0]
+      }
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return
+      this.customerService.updateCustomer(result)
+      this.selection.clear()
+    })
+  }
 
   deleteCustomers() {
     const dialogData: ConfirmatonDialogData = {
