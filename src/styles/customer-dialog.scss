@@ -1,0 +1,27 @@
+.customer-dialog {
+  width: 400px;
+  max-width: 90vw;
+
+  mat-dialog-content {
+    padding-top: 8px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  mat-checkbox {
+    margin-top: 8px;
+  }
+
+  mat-dialog-actions {
+    padding-top: 16px;
+    gap: 8px;
+  }
+}

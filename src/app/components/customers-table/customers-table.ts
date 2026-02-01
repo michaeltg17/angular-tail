@@ -122,10 +122,10 @@ export class CustomersTable implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(CustomerDialog, {
       data: {
         mode: DialogMode.Edit,
-        customer: this.selection.selected[0],
-        disableClose: true
+        customer: this.selection.selected[0]
       },
-      panelClass: 'customer-dialog'
+      panelClass: 'customer-dialog',
+      disableClose: true
     })
 
     dialogRef.afterClosed().subscribe(result => {
