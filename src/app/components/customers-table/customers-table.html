@@ -4,6 +4,10 @@
       <input matInput placeholder="Search" [(ngModel)]="filterValue" (input)="applyFilter(filterValue)" />
     </mat-form-field>
 
+    <button mat-icon-button (click)="addCustomer()">
+      <mat-icon>add</mat-icon>
+    </button>
+
     <button mat-icon-button (click)="editCustomer()" [disabled]="selection.selected.length !== 1">
       <mat-icon>edit</mat-icon>
     </button>

@@ -17,7 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ConfirmationDialog, ConfirmatonDialogData } from '../confirmation-dialog/confirmation-dialog';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { CustomerDialog } from '../customer-dialog/customer-dialog';
+import { CustomerDialog, DialogMode } from '../customer-dialog/customer-dialog';
 
 @Component({
   selector: 'app-customers-table',
@@ -105,7 +105,9 @@ export class CustomersTable implements OnInit, AfterViewInit {
 
   addCustomer() {
     const dialogRef = this.dialog.open(CustomerDialog, {
-      data: { mode: DialogMode.Add }
+      data: { mode: DialogMode.Add },
+      panelClass: 'customer-dialog',
+      disableClose: true
     })
 
     dialogRef.afterClosed().subscribe(result => {
@@ -114,15 +116,16 @@ export class CustomersTable implements OnInit, AfterViewInit {
     })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   editCustomer() {
     if (this.selection.selected.length !== 1) return
 
     const dialogRef = this.dialog.open(CustomerDialog, {
       data: {
-        mode: 'edit',
-        customer: this.selection.selected[0]
-      }
+        mode: DialogMode.Edit,
+        customer: this.selection.selected[0],
+        disableClose: true
+      },
+      panelClass: 'customer-dialog'
     })
 
     dialogRef.afterClosed().subscribe(result => {

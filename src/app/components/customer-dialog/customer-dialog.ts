@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core'
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import { MatButtonModule } from '@angular/material/button'
@@ -7,7 +7,13 @@ import { MatInputModule } from '@angular/material/input'
 import { MatCheckboxModule } from '@angular/material/checkbox'
 import { Customer } from '../../models/customer'
 
-export type DialogMode = 'add' | 'edit' | 'view';
+//tree-shake friendly
+export const DialogMode = {
+  Add: 'add',
+  Edit: 'edit',
+  View: 'view'
+} as const
+export type DialogMode = typeof DialogMode[keyof typeof DialogMode]
 
 export interface CustomerDialogData {
   mode: DialogMode,
@@ -22,13 +28,15 @@ export interface CustomerDialogData {
     FormsModule,
     MatButtonModule,
     MatInputModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDialogModule
   ],
   templateUrl: './customer-dialog.html'
 })
 export class CustomerDialog {
   private dialogRef = inject(MatDialogRef<CustomerDialog>)
   data = inject<CustomerDialogData>(MAT_DIALOG_DATA)
+  dialogMode = DialogMode;
 
   customer: Customer = this.data.mode === 'edit'
     ? { ...this.data.customer! }
