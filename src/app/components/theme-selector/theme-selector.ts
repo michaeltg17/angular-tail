@@ -16,10 +16,11 @@ import { themeColors, themeModes } from '../../models/theme';
     MatIconModule,
     MatRadioModule,
     MatMenuModule,
-    MatButtonModule],
+    MatButtonModule,
+  ],
   templateUrl: './theme-selector.html',
   styleUrl: './theme-selector.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeSelector implements OnInit {
   themeService = inject(ThemeService);

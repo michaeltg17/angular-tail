@@ -1,41 +1,30 @@
 <h2 mat-dialog-title>
-  {{ data.mode === dialogMode.Add ? 'Add Customer' : data.mode === dialogMode.Edit ? 'Edit Customer' : 'View Customer' }}
+  {{ data.mode === dialogMode.Add ? 'Add Customer' : data.mode === dialogMode.Edit ? 'Edit Customer'
+  : 'View Customer' }}
 </h2>
 
 <mat-dialog-content>
   <div class="form">
-
     <mat-form-field>
       <mat-label>First name</mat-label>
       <input matInput [formControl]="firstName" />
-      <mat-error *ngIf="firstName.hasError('required')">
-        First name is required
-      </mat-error>
+      <mat-error *ngIf="firstName.hasError('required')"> First name is required </mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Last name</mat-label>
       <input matInput [formControl]="lastName" />
-      <mat-error *ngIf="lastName.hasError('required')">
-        Last name is required
-      </mat-error>
+      <mat-error *ngIf="lastName.hasError('required')"> Last name is required </mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Email</mat-label>
       <input matInput [formControl]="email" />
-      <mat-error *ngIf="email.hasError('required')">
-        Email is required
-      </mat-error>
-      <mat-error *ngIf="email.hasError('email')">
-        Invalid email address
-      </mat-error>
+      <mat-error *ngIf="email.hasError('required')"> Email is required </mat-error>
+      <mat-error *ngIf="email.hasError('email')"> Invalid email address </mat-error>
     </mat-form-field>
 
-    <mat-checkbox [formControl]="isActive">
-      Active
-    </mat-checkbox>
-
+    <mat-checkbox [formControl]="isActive"> Active </mat-checkbox>
   </div>
 </mat-dialog-content>
 
@@ -48,7 +37,8 @@
     mat-flat-button
     color="warn"
     [disabled]="!isValid()"
-    (click)="save()">
+    (click)="save()"
+  >
     {{ data.mode === dialogMode.Add ? 'Add' : 'Save' }}
   </button>
 </mat-dialog-actions>

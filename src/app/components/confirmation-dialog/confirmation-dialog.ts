@@ -14,11 +14,11 @@ export interface ConfirmatonDialogData {
   templateUrl: './confirmation-dialog.html',
   styleUrls: ['./confirmation-dialog.scss'],
   standalone: true,
-  imports: [MatDialogModule,MatButtonModule],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [MatDialogModule, MatButtonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmationDialog {
-  data: ConfirmatonDialogData = inject(MAT_DIALOG_DATA)
+  data: ConfirmatonDialogData = inject(MAT_DIALOG_DATA);
   dialogRef = inject(MatDialogRef<ConfirmationDialog>);
 
   confirm() {

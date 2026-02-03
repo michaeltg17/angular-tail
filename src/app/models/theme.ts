@@ -24,7 +24,7 @@ export class Theme {
 
   constructor(
     public readonly mode: ThemeMode,
-    public readonly color: ThemeColor
+    public readonly color: ThemeColor,
   ) {
     this.name = `${capitalize(mode)} ${capitalize(color)}`;
   }

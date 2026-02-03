@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "ng serve",
+    "format": "prettier --write \"src/**/*.{ts,html,css,scss,json,md}\"",
     "lint": "ng lint"
   },
   "private": true,
@@ -22,11 +23,15 @@
     "@angular/build": "^21.1.2",
     "@angular/cli": "^21.1.2",
     "@angular/compiler-cli": "^21.1.2",
+    "@prettier/plugin-xml": "^3.4.2",
     "angular-eslint": "21.2.0",
     "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
     "globals": "^17.2.0",
     "jsdom": "^27.1.0",
     "msw": "^2.12.7",
+    "prettier": "^3.8.1",
     "tailwindcss": "^4.1.18",
     "typescript": "~5.9.2",
     "typescript-eslint": "8.50.1",

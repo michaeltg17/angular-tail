@@ -13,36 +13,40 @@ html.dark {
 }
 
 $palettes: (
-  "red": mat.$red-palette,
-  "green": mat.$green-palette,
-  "blue": mat.$blue-palette,
-  "yellow": mat.$yellow-palette,
-  "cyan": mat.$cyan-palette,
-  "magenta": mat.$magenta-palette,
-  "orange": mat.$orange-palette,
-  "chartreuse": mat.$chartreuse-palette,
-  "spring-green": mat.$spring-green-palette,
-  "azure": mat.$azure-palette,
-  "violet": mat.$violet-palette,
-  "rose": mat.$rose-palette
+  'red': mat.$red-palette,
+  'green': mat.$green-palette,
+  'blue': mat.$blue-palette,
+  'yellow': mat.$yellow-palette,
+  'cyan': mat.$cyan-palette,
+  'magenta': mat.$magenta-palette,
+  'orange': mat.$orange-palette,
+  'chartreuse': mat.$chartreuse-palette,
+  'spring-green': mat.$spring-green-palette,
+  'azure': mat.$azure-palette,
+  'violet': mat.$violet-palette,
+  'rose': mat.$rose-palette,
 );
 
 @each $name, $palette in $palettes {
   html.light.#{$name} {
-    @include mat.theme((
-      theme-type: light,
-      color: $palette,
-      typography: Roboto,
-      density: 0
-    ));
+    @include mat.theme(
+      (
+        theme-type: light,
+        color: $palette,
+        typography: Roboto,
+        density: 0,
+      )
+    );
   }
 
   html.dark.#{$name} {
-    @include mat.theme((
-      theme-type: dark,
-      color: $palette,
-      typography: Roboto,
-      density: 0
-    ));
+    @include mat.theme(
+      (
+        theme-type: dark,
+        color: $palette,
+        typography: Roboto,
+        density: 0,
+      )
+    );
   }
 }

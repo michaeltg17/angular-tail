@@ -5,12 +5,8 @@ import { ThemeSelector } from './components/theme-selector/theme-selector';
 
 @Component({
   selector: 'app-root',
-  imports: [
-    CustomersTable,
-    MatToolbarModule,
-    ThemeSelector],
+  imports: [CustomersTable, MatToolbarModule, ThemeSelector],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
-export class App {
-}
+export class App {}
