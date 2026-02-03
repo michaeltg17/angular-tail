@@ -23,14 +23,14 @@
     "@angular/cli": "^21.1.0",
     "@angular/compiler-cli": "^21.1.0",
     "@angular/material": "^21.1.0",
-    "angular-eslint": "21.1.0",
-    "eslint": "^9.39.1",
+    "angular-eslint": "21.2.0",
+    "eslint": "^9.39.2",
     "globals": "^17.2.0",
     "jsdom": "^27.1.0",
     "msw": "^2.12.7",
     "tailwindcss": "^4.1.18",
     "typescript": "~5.9.2",
-    "typescript-eslint": "8.47.0",
+    "typescript-eslint": "8.50.1",
     "vitest": "^4.0.8"
   },
   "msw": {

@@ -1,43 +1,53 @@
 <h2 mat-dialog-title>
-  {{ data.mode === dialogMode.Add ? 'Add Customer' : 'Edit Customer' }}
+  {{ data.mode === dialogMode.Add ? 'Add Customer' : data.mode === dialogMode.Edit ? 'Edit Customer' : 'View Customer' }}
 </h2>
 
 <mat-dialog-content>
   <div class="form">
+
     <mat-form-field>
       <mat-label>First name</mat-label>
-      <input
-        matInput
-        placeholder="First name"
-        [(ngModel)]="customer.firstName" />
+      <input matInput [formControl]="firstName" />
+      <mat-error *ngIf="firstName.hasError('required')">
+        First name is required
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Last name</mat-label>
-      <input
-        matInput
-        placeholder="Last name"
-        [(ngModel)]="customer.lastName" />
+      <input matInput [formControl]="lastName" />
+      <mat-error *ngIf="lastName.hasError('required')">
+        Last name is required
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Email</mat-label>
-      <input
-        matInput
-        placeholder="Email"
-        [(ngModel)]="customer.email" />
+      <input matInput [formControl]="email" />
+      <mat-error *ngIf="email.hasError('required')">
+        Email is required
+      </mat-error>
+      <mat-error *ngIf="email.hasError('email')">
+        Invalid email address
+      </mat-error>
     </mat-form-field>
 
-    <mat-checkbox [(ngModel)]="customer.isActive">
+    <mat-checkbox [formControl]="isActive">
       Active
     </mat-checkbox>
+
   </div>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-stroked-button (click)="cancel()">Cancel</button>
+  <button mat-stroked-button (click)="cancel()">
+    {{ data.mode === dialogMode.View ? 'Close' : 'Cancel' }}
+  </button>
   <button
-    mat-flat-button color="warn"
+    *ngIf="data.mode !== dialogMode.View"
+    mat-flat-button
+    color="warn"
+    [disabled]="!isValid()"
     (click)="save()">
     {{ data.mode === dialogMode.Add ? 'Add' : 'Save' }}
   </button>

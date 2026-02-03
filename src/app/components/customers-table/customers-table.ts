@@ -17,7 +17,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ConfirmationDialog, ConfirmatonDialogData } from '../confirmation-dialog/confirmation-dialog';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { CustomerDialog, DialogMode } from '../customer-dialog/customer-dialog';
+import { CustomerDialog } from '../customer-dialog/customer-dialog';
+import { DialogMode } from '../../models/dialogMode';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-customers-table',
@@ -45,6 +47,8 @@ export class CustomersTable implements OnInit, AfterViewInit {
   private snackBar = inject(MatSnackBar);
   private dialog = inject(MatDialog);
   private changeDetectorRef = inject(ChangeDetectorRef);
+  private route = inject(ActivatedRoute)
+  private router = inject(Router)
 
   columns = [
     { key: 'id', label: 'Id' },
@@ -79,7 +83,20 @@ export class CustomersTable implements OnInit, AfterViewInit {
   })
 
   ngOnInit() {
-    this.customerService.loadCustomers();
+    this.customerService.loadCustomers()
+
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id')
+      if (!id) return
+
+      const customer = this.customerService
+        .customers()
+        .find(c => c.id === +id)
+
+      if (!customer) return
+
+      this.editCustomer(customer)
+    })
   }
 
   ngAfterViewInit() {
@@ -116,23 +133,13 @@ export class CustomersTable implements OnInit, AfterViewInit {
     })
   }
 
+  editCustomer(customer: Customer) { if (this.selection.selected.length !== 1) return const dialogRef = this.dialog.open(CustomerDialog, { data: { mode: DialogMode.Edit, customer: customer }, panelClass: 'customer-dialog', disableClose: true }) dialogRef.afterClosed().subscribe(result => { if (!result) return this.customerService.updateCustomer(result) this.selection.clear() }) }
+
   editCustomer() {
     if (this.selection.selected.length !== 1) return
 
-    const dialogRef = this.dialog.open(CustomerDialog, {
-      data: {
-        mode: DialogMode.Edit,
-        customer: this.selection.selected[0]
-      },
-      panelClass: 'customer-dialog',
-      disableClose: true
-    })
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (!result) return
-      this.customerService.updateCustomer(result)
-      this.selection.clear()
-    })
+    const customer = this.selection.selected[0]
+    this.router.navigate(['/customers', customer.id])
   }
 
   deleteCustomers() {
@@ -157,6 +164,16 @@ export class CustomersTable implements OnInit, AfterViewInit {
 
       this.selection.clear()
       this.changeDetectorRef.markForCheck()
+    })
+  }
+
+  viewCustomer(customer: Customer) {
+    this.dialog.open(CustomerDialog, {
+      panelClass: ['customer-dialog', 'mode-view'],
+      data: {
+        mode: DialogMode.View,
+        customer
+      }
     })
   }
 }

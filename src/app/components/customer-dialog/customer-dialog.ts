@@ -1,55 +1,75 @@
 import { Component, inject } from '@angular/core'
-import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog'
-import { CommonModule } from '@angular/common'
-import { FormsModule } from '@angular/forms'
-import { MatButtonModule } from '@angular/material/button'
+import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms'
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog'
 import { MatInputModule } from '@angular/material/input'
 import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatButtonModule } from '@angular/material/button'
+import { CommonModule } from '@angular/common'
 import { Customer } from '../../models/customer'
-
-//tree-shake friendly
-export const DialogMode = {
-  Add: 'add',
-  Edit: 'edit',
-  View: 'view'
-} as const
-export type DialogMode = typeof DialogMode[keyof typeof DialogMode]
-
-export interface CustomerDialogData {
-  mode: DialogMode,
-  customer?: Customer
-}
+import { DialogMode } from '../../models/dialogMode'
 
 @Component({
   standalone: true,
   selector: 'app-customer-dialog',
   imports: [
     CommonModule,
-    FormsModule,
-    MatButtonModule,
+    ReactiveFormsModule,
+    MatDialogModule,
     MatInputModule,
     MatCheckboxModule,
-    MatDialogModule
+    MatButtonModule
   ],
   templateUrl: './customer-dialog.html'
 })
 export class CustomerDialog {
   private dialogRef = inject(MatDialogRef<CustomerDialog>)
-  data = inject<CustomerDialogData>(MAT_DIALOG_DATA)
+  data = inject<{ mode: DialogMode; customer?: Customer }>(MAT_DIALOG_DATA)
   dialogMode = DialogMode;
 
-  customer: Customer = this.data.mode === 'edit'
-    ? { ...this.data.customer! }
-    : {
-        id: 0,
-        firstName: '',
-        lastName: '',
-        email: '',
-        isActive: true
-      }
+  firstName = new FormControl(this.data.customer?.firstName ?? '', {
+    nonNullable: true,
+    validators: Validators.required
+  })
+
+  lastName = new FormControl(this.data.customer?.lastName ?? '', {
+    nonNullable: true,
+    validators: Validators.required
+  })
+
+  email = new FormControl(this.data.customer?.email ?? '', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.email]
+  })
+
+  isActive = new FormControl(this.data.customer?.isActive ?? true, {
+    nonNullable: true
+  })
+
+  constructor() {
+    if (this.data.mode === DialogMode.View) {
+      this.firstName.disable()
+      this.lastName.disable()
+      this.email.disable()
+      this.isActive.disable()
+    }
+  }
+
+  isValid(): boolean {
+    return this.firstName.valid && this.lastName.valid && this.email.valid
+  }
 
   save() {
-    this.dialogRef.close(this.customer)
+    if (!this.isValid()) {
+      return
+    }
+
+    this.dialogRef.close({
+      id: this.data.customer?.id ?? 0,
+      firstName: this.firstName.value,
+      lastName: this.lastName.value,
+      email: this.email.value,
+      isActive: this.isActive.value
+    })
   }
 
   cancel() {
