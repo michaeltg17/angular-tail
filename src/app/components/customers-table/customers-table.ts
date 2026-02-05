@@ -7,7 +7,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   effect,
-  computed
+  signal
 } from '@angular/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -26,10 +26,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ConfirmationDialog, ConfirmationDialogData } from '../confirmation-dialog/confirmation-dialog';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { CustomerDialog } from '../customer-dialog/customer-dialog';
 import { DialogMode } from '../../models/dialogMode';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { filter, map, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-customers-table',
@@ -72,7 +74,7 @@ export class CustomersTable implements OnInit, AfterViewInit {
   selection = new SelectionModel<Customer>(true, []);
   dataSource = new MatTableDataSource<Customer>();
   filterValue = '';
-  private dialogOpen = false;
+  private dialogOpen = signal(false);
 
   customers = this.customerService.customers;
   loading = this.customerService.loading;
@@ -95,36 +97,78 @@ export class CustomersTable implements OnInit, AfterViewInit {
   });
 
   readonly routeEffect = effect(() => {
-    const { id, isNew, isEdit } = this.routeState();
+    const rs = this.routeState();
     const customers = this.customers();
 
-    if (!customers.length) return;
+    console.log('routeEffect fired', { routeState: rs, dialogOpen: this.dialogOpen(), customersCount: customers.length });
 
-    if (isNew) {
-      this.openAddDialog();
+    if (this.dialogOpen()) {
+      console.log('routeEffect: dialog already open - skipping');
       return;
     }
 
-    if (!id) return;
+    const { id, isNew, isEdit } = rs;
+
+    if (!customers.length) {
+      console.log('routeEffect: no customers loaded yet');
+      return;
+    }
+
+    if (isNew) {
+      console.log('routeEffect: opening Add dialog');
+      this.dialogOpen.set(true);
+      const ref = this.openAddDialog();
+      ref.afterClosed().subscribe(result => {
+        console.log('Add dialog closed', result);
+        this.dialogOpen.set(false);
+        this.router.navigate(['/customers']);
+        if (result) this.customerService.addCustomer(result);
+      });
+      return;
+    }
+
+    if (!id) {
+      console.log('routeEffect: no id param');
+      return;
+    }
 
     const customer = customers.find(c => c.id === +id);
-    if (!customer) return;
-
-    if (isEdit) {
-      this.openEditDialog(customer);
-    } else {
-      this.openViewDialog(customer);
+    if (!customer) {
+      console.log('routeEffect: customer not found for id', id);
+      return;
     }
+
+    console.log('routeEffect: opening', isEdit ? 'Edit' : 'View', 'dialog for', id);
+    this.dialogOpen.set(true);
+    const ref = isEdit ? this.openEditDialog(customer) : this.openViewDialog(customer);
+    ref.afterClosed().subscribe(result => {
+      console.log((isEdit ? 'Edit' : 'View') + ' dialog closed', result);
+      this.dialogOpen.set(false);
+      this.router.navigate(['/customers']);
+      if (isEdit && result) this.customerService.updateCustomer(result);
+    });
   });
 
-  routeState = computed(() => {
-    const snapshot = this.route.snapshot;
+  routeState = toSignal(
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd),
+      startWith(null),
+      map(() => this.getDeepestRouteState())
+    ),
+    { initialValue: { id: this.route.snapshot.paramMap.get('id'), isNew: false, isEdit: false } }
+  );
+
+  private getDeepestRouteState() {
+    let snapshot = this.router.routerState.snapshot.root;
+    while (snapshot.firstChild) {
+      snapshot = snapshot.firstChild;
+    }
+
     const id = snapshot.paramMap.get('id');
     const isNew = snapshot.url.some(s => s.path === 'new');
     const isEdit = snapshot.url.some(s => s.path === 'edit');
-
     return { id, isNew, isEdit };
-  });
+  }
 
   ngOnInit() {
     this.customerService.loadCustomers();
@@ -155,42 +199,35 @@ export class CustomersTable implements OnInit, AfterViewInit {
   }
 
   openViewDialog(customer: Customer) {
+    console.log('openViewDialog called for', customer?.id);
     const ref = this.dialog.open(CustomerDialog, {
       panelClass: ['customer-dialog', 'mode-view'],
       data: { mode: DialogMode.View, customer }
     });
 
-    ref.afterClosed().subscribe(() => {
-      this.router.navigate(['/customers']);
-    });
+    return ref as MatDialogRef<CustomerDialog>;
   }
 
   openEditDialog(customer: Customer) {
+    console.log('openEditDialog called for', customer?.id);
     const ref = this.dialog.open(CustomerDialog, {
       data: { mode: DialogMode.Edit, customer },
       panelClass: 'customer-dialog',
       disableClose: true
     });
 
-    ref.afterClosed().subscribe(result => {
-      this.router.navigate(['/customers']);
-      if (!result) return;
-      this.customerService.updateCustomer(result);
-    });
+    return ref as MatDialogRef<CustomerDialog>;
   }
 
   openAddDialog() {
+    console.log('openAddDialog called');
     const ref = this.dialog.open(CustomerDialog, {
       data: { mode: DialogMode.Add },
       panelClass: 'customer-dialog',
       disableClose: true
     });
 
-    ref.afterClosed().subscribe(result => {
-      this.router.navigate(['/customers']);
-      if (!result) return;
-      this.customerService.addCustomer(result);
-    });
+    return ref as MatDialogRef<CustomerDialog>;
   }
 
   viewCustomer(customer: Customer) {
