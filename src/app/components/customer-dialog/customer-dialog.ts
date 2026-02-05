@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
@@ -14,10 +14,12 @@ import { DialogMode } from '../../models/dialogMode';
   imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatInputModule, MatCheckboxModule, MatButtonModule],
   templateUrl: './customer-dialog.html'
 })
-export class CustomerDialog {
+export class CustomerDialog implements OnDestroy {
   private dialogRef = inject(MatDialogRef<CustomerDialog>);
   data = inject<{ mode: DialogMode; customer?: Customer }>(MAT_DIALOG_DATA);
   dialogMode = DialogMode;
+
+  private _subs: { unsubscribe(): void }[] = [];
 
   firstName = new FormControl(this.data.customer?.firstName ?? '', {
     nonNullable: true,
@@ -48,6 +50,20 @@ export class CustomerDialog {
       this.email.disable();
       this.isActive.disable();
     }
+    // dynamic disableClose: prevent closing when the user made changes
+    // initially allow close (unless in view mode where fields are disabled)
+    this.dialogRef.disableClose = false;
+
+    const markDisable = () => {
+      const anyDirty = this.firstName.dirty || this.lastName.dirty || this.email.dirty || this.isActive.dirty;
+      this.dialogRef.disableClose = anyDirty;
+    };
+
+    // subscribe to value changes to update disableClose
+    this._subs.push(this.firstName.valueChanges.subscribe(markDisable));
+    this._subs.push(this.lastName.valueChanges.subscribe(markDisable));
+    this._subs.push(this.email.valueChanges.subscribe(markDisable));
+    this._subs.push(this.isActive.valueChanges.subscribe(markDisable));
   }
 
   isValid(): boolean {
@@ -70,5 +86,9 @@ export class CustomerDialog {
 
   cancel() {
     this.dialogRef.close();
+  }
+
+  ngOnDestroy(): void {
+    this._subs.forEach(s => s.unsubscribe());
   }
 }

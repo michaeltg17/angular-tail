@@ -192,8 +192,7 @@ export class CustomersTable implements OnInit, AfterViewInit {
   openEditDialog(customer: Customer) {
     const ref = this.dialog.open(CustomerDialog, {
       data: { mode: DialogMode.Edit, customer },
-      panelClass: 'customer-dialog',
-      disableClose: true
+      panelClass: 'customer-dialog'
     });
 
     return ref as MatDialogRef<CustomerDialog>;
@@ -202,8 +201,7 @@ export class CustomersTable implements OnInit, AfterViewInit {
   openAddDialog() {
     const ref = this.dialog.open(CustomerDialog, {
       data: { mode: DialogMode.Add },
-      panelClass: 'customer-dialog',
-      disableClose: true
+      panelClass: 'customer-dialog'
     });
 
     return ref as MatDialogRef<CustomerDialog>;
@@ -231,8 +229,7 @@ export class CustomersTable implements OnInit, AfterViewInit {
     };
 
     const dialogRef = this.dialog.open(ConfirmationDialog, {
-      data: dialogData,
-      disableClose: true
+      data: dialogData
     });
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
