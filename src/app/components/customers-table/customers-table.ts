@@ -100,26 +100,16 @@ export class CustomersTable implements OnInit, AfterViewInit {
     const rs = this.routeState();
     const customers = this.customers();
 
-    console.log('routeEffect fired', { routeState: rs, dialogOpen: this.dialogOpen(), customersCount: customers.length });
-
-    if (this.dialogOpen()) {
-      console.log('routeEffect: dialog already open - skipping');
-      return;
-    }
+    if (this.dialogOpen()) return;
 
     const { id, isNew, isEdit } = rs;
 
-    if (!customers.length) {
-      console.log('routeEffect: no customers loaded yet');
-      return;
-    }
+    if (!customers.length) return;
 
     if (isNew) {
-      console.log('routeEffect: opening Add dialog');
       this.dialogOpen.set(true);
       const ref = this.openAddDialog();
       ref.afterClosed().subscribe(result => {
-        console.log('Add dialog closed', result);
         this.dialogOpen.set(false);
         this.router.navigate(['/customers']);
         if (result) this.customerService.addCustomer(result);
@@ -127,22 +117,14 @@ export class CustomersTable implements OnInit, AfterViewInit {
       return;
     }
 
-    if (!id) {
-      console.log('routeEffect: no id param');
-      return;
-    }
+    if (!id) return;
 
     const customer = customers.find(c => c.id === +id);
-    if (!customer) {
-      console.log('routeEffect: customer not found for id', id);
-      return;
-    }
+    if (!customer) return;
 
-    console.log('routeEffect: opening', isEdit ? 'Edit' : 'View', 'dialog for', id);
     this.dialogOpen.set(true);
     const ref = isEdit ? this.openEditDialog(customer) : this.openViewDialog(customer);
     ref.afterClosed().subscribe(result => {
-      console.log((isEdit ? 'Edit' : 'View') + ' dialog closed', result);
       this.dialogOpen.set(false);
       this.router.navigate(['/customers']);
       if (isEdit && result) this.customerService.updateCustomer(result);
@@ -199,7 +181,6 @@ export class CustomersTable implements OnInit, AfterViewInit {
   }
 
   openViewDialog(customer: Customer) {
-    console.log('openViewDialog called for', customer?.id);
     const ref = this.dialog.open(CustomerDialog, {
       panelClass: ['customer-dialog', 'mode-view'],
       data: { mode: DialogMode.View, customer }
@@ -209,7 +190,6 @@ export class CustomersTable implements OnInit, AfterViewInit {
   }
 
   openEditDialog(customer: Customer) {
-    console.log('openEditDialog called for', customer?.id);
     const ref = this.dialog.open(CustomerDialog, {
       data: { mode: DialogMode.Edit, customer },
       panelClass: 'customer-dialog',
@@ -220,7 +200,6 @@ export class CustomersTable implements OnInit, AfterViewInit {
   }
 
   openAddDialog() {
-    console.log('openAddDialog called');
     const ref = this.dialog.open(CustomerDialog, {
       data: { mode: DialogMode.Add },
       panelClass: 'customer-dialog',
