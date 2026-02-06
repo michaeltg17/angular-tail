@@ -4,9 +4,16 @@ import { MatDialogRef } from '@angular/material/dialog';
 @Injectable({ providedIn: 'root' })
 export class PendingChangesService {
   private _pending = false;
-  private _activeDialog: MatDialogRef<any> | null = null;
+  private _activeDialog: MatDialogRef<unknown> | null = null;
+  private _beforeUnloadHandler = (e: BeforeUnloadEvent) => {
+    // Standard behavior: set returnValue to show the native confirmation dialog
+    e.preventDefault();
+    // Chrome requires setting returnValue to a non-empty string
+    e.returnValue = '';
+    return '';
+  };
 
-  setActiveDialog(ref: MatDialogRef<any> | null) {
+  setActiveDialog(ref: MatDialogRef<unknown> | null) {
     this._activeDialog = ref;
   }
 
@@ -16,10 +23,16 @@ export class PendingChangesService {
 
   setPending(v: boolean) {
     this._pending = v;
+    if (v) {
+      window.addEventListener('beforeunload', this._beforeUnloadHandler);
+    } else {
+      window.removeEventListener('beforeunload', this._beforeUnloadHandler);
+    }
   }
 
   clear() {
     this._pending = false;
+    window.removeEventListener('beforeunload', this._beforeUnloadHandler);
   }
 
   isPending(): boolean {
@@ -38,6 +51,7 @@ export class PendingChangesService {
         /* ignore */
       }
       this._activeDialog = null;
+      window.removeEventListener('beforeunload', this._beforeUnloadHandler);
       return true;
     }
 
@@ -51,6 +65,7 @@ export class PendingChangesService {
         /* ignore */
       }
       this._activeDialog = null;
+      window.removeEventListener('beforeunload', this._beforeUnloadHandler);
     }
     return ok;
   }
