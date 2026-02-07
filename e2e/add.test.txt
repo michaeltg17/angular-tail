@@ -1,12 +1,13 @@
 Adds correctly
   - Clicks add button to open add dialog
-  - Fills all fields
+  - Fills all fields with valid values
   - Clicks add
   - Customer is added to the table
 
 Validations
   - Clicks add button to open add dialog
-  - Fills all fields except first name
+  - Fills all fields properly except one (test for every field, if email, check email validation)
+  - Error message for the field appears
   - Add button is disabled
 
 Canceling when no changes
@@ -35,7 +36,7 @@ Click cancel
 
 Click outside
   - Clicks add button to open add dialog
-  - Makes change to first name
+  - Makes change to first name (test for every field)
   - Clicks outside, dialog stays nothing happens
 
 Click back
