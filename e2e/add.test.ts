@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
 
 async function openAddDialog(page: Page) {
-  // click the first icon-button in the customers table (Add)
+  // click the first icon-button in the customers table (Add)2
   const addBtn = page.locator('app-customers-table button[mat-icon-button]').first();
   await expect(addBtn).toBeVisible();
   await addBtn.click();
